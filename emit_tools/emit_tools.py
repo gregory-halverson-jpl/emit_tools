@@ -26,3 +26,4 @@ from .is_adjacent import is_adjacent
 from .merge_emit import merge_emit
 from .ortho_browse import ortho_browse
 from .emit_xarray import emit_xarray
+from .generate_coordinate_dict import generate_coordinate_dict

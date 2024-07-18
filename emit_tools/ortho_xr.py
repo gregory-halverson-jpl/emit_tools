@@ -64,9 +64,6 @@ def ortho_xr(swath_ds: xr.Dataset, GLT_nodata_value: int = GLT_NODATA_VALUE, fil
         **swath_ds.coords,
     }  # unpack to add appropriate coordinates
 
-    print("coords:")
-    print(coords)
-
     # Remove Unnecessary Coords
     for key in ["downtrack", "crosstrack", "lat", "lon", "glt_x", "glt_y", "elev"]:
         del coords[key]
