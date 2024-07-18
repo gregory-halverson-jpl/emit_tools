@@ -37,14 +37,14 @@ def ortho_xr(swath_ds: xr.Dataset, GLT_nodata_value: int = GLT_NODATA_VALUE, fil
         swath_dimensions = swath_ds[var].dims
 
         # Apply GLT to dataset
-        out_ds = apply_GLT(swath_array, GLT_array, GLT_nodata_value=GLT_nodata_value)
+        ortho_array = apply_GLT(swath_array, GLT_array, GLT_nodata_value=GLT_nodata_value)
 
         # Update variables - Only works for 2 or 3 dimensional arays
         if swath_array.ndim == 2:
-            out_ds = out_ds.squeeze()
-            data_vars[var] = (["latitude", "longitude"], out_ds)
+            ortho_array = ortho_array.squeeze()
+            data_vars[var] = (["latitude", "longitude"], ortho_array)
         else:
-            data_vars[var] = (["latitude", "longitude", swath_dimensions[-1]], out_ds)
+            data_vars[var] = (["latitude", "longitude", swath_dimensions[-1]], ortho_array)
 
         del swath_array
 
@@ -64,6 +64,9 @@ def ortho_xr(swath_ds: xr.Dataset, GLT_nodata_value: int = GLT_NODATA_VALUE, fil
         **swath_ds.coords,
     }  # unpack to add appropriate coordinates
 
+    print("coords:")
+    print(coords)
+
     # Remove Unnecessary Coords
     for key in ["downtrack", "crosstrack", "lat", "lon", "glt_x", "glt_y", "elev"]:
         del coords[key]
@@ -74,7 +77,7 @@ def ortho_xr(swath_ds: xr.Dataset, GLT_nodata_value: int = GLT_NODATA_VALUE, fil
     # Build Output xarray Dataset and assign data_vars array attributes
     ortho_ds = xr.Dataset(data_vars=data_vars, coords=coords, attrs=swath_ds.attrs)
 
-    del out_ds
+    del ortho_array
 
     # Assign Attributes from Original Datasets
     for var in var_list:
