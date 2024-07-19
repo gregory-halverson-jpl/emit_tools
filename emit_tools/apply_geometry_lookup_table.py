@@ -3,7 +3,7 @@ import numpy as np
 from .constants import *
 
 # Function to Apply the GLT to an array
-def apply_GLT(swath_array: np.ndarray, GLT_array: np.ndarray, fill_value: int = FILL_VALUE, GLT_nodata_value: int = GLT_NODATA_VALUE):
+def apply_GLT(swath_array: np.ndarray, GLT_array: np.ndarray, fill_value: int = FILL_VALUE, GLT_nodata_value: int = GLT_NODATA_VALUE) -> np.ndarray:
     """
     This function applies the GLT array to a numpy array of either 2 or 3 dimensions.
 
@@ -14,6 +14,10 @@ def apply_GLT(swath_array: np.ndarray, GLT_array: np.ndarray, fill_value: int = 
     Returns:
     out_ds: a numpy array of orthorectified data.
     """
+    latitude_length = GLT_array.shape[0]
+    longitude_length = GLT_array.shape[1]
+    wavelength_length = swath_array.shape[-1]
+    ortho_array_shape = (latitude_length, longitude_length, wavelength_length)
 
     # Build Output Dataset
     if swath_array.ndim == 2:
